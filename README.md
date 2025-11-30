@@ -14,7 +14,7 @@ Analysis of gender representation in STEM fields across 117 U.S. cities (2015-20
 ## Included Files
 
 **Data:**
-- `women_in_stem__1_.csv` - Dataset (117 cities, 16 variables)
+- `women_in_stem.csv` - Dataset (117 cities, 16 variables)
 - `women_in_stem.ipynb` - Python analysis notebook
 
 **Power BI:**
@@ -22,7 +22,7 @@ Analysis of gender representation in STEM fields across 117 U.S. cities (2015-20
 - `DAX_UPDATED_FIXED.dax` - All DAX formulas
 
 **Presentations:**
-- `Women_in_STEM_5min.pptx`
+- `Redi Project powerpoint.pptx`
 
 **Documentation:**
 - `README.md` - This file
@@ -90,5 +90,3 @@ Adedokun Rohi Kunmi
 November 28, 2025
 
 ---
-
-*Last Updated: November 30, 2025*
