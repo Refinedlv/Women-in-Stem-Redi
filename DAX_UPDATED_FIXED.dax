@@ -1,0 +1,148 @@
+// ═══════════════════════════════════════════════════════════════
+// WOMEN IN STEM PROJECT - UPDATED DAX MEASURES (FIXED)
+// For dataset: women_in_stem.csv
+// All formulas corrected for percentage handling
+// ═══════════════════════════════════════════════════════════════
+
+// ───────────────────────────────────────────────────────────────
+// SECTION 1: CALCULATED COLUMNS
+// ───────────────────────────────────────────────────────────────
+
+// 1. Combined City and State for better labeling
+City_State = 
+'women_in_stem'[CityName] & ", " & 'women_in_stem'[State]
+
+// 2. Income Gap (Absolute difference in dollars)
+Income_Gap = 
+'women_in_stem'[median_stem_income_all_2019] - 'women_in_stem'[median_stem_income_women_2019]
+
+// 3. Income Gap as Percentage
+// Format this column as Percentage with 1 decimal place
+Income_Gap_Pct = 
+DIVIDE(
+    'women_in_stem'[Income_Gap],
+    'women_in_stem'[median_stem_income_all_2019],
+    0
+)
+
+// 4. Women STEM Category
+Women_STEM_Category = 
+SWITCH(
+    TRUE(),
+    'women_in_stem'[pct_women_stem_2019] >= 35, "High (35%+)",
+    'women_in_stem'[pct_women_stem_2019] >= 28, "Above Average (28-35%)",
+    'women_in_stem'[pct_women_stem_2019] >= 22, "Average (22-28%)",
+    "Below Average (<22%)"
+)
+
+
+// 5. Pay Gap Status
+Pay_Gap_Status = 
+SWITCH(
+    TRUE(),
+    'women_in_stem'[Income_Gap] > 15000, "Very High Gap (>$15K)",
+    'women_in_stem'[Income_Gap] > 10000, "High Gap ($10-15K)",
+    'women_in_stem'[Income_Gap] > 5000, "Medium Gap ($5-10K)",
+    "Low Gap (<$5K)"
+)
+
+
+// ───────────────────────────────────────────────────────────────
+// SECTION 2: BASIC MEASURES (Aggregations)
+// Create these AFTER calculated columns
+// ───────────────────────────────────────────────────────────────
+
+// Total STEM Jobs across all cities
+Total_STEM_Jobs = 
+SUM('women_in_stem'[num_stem_jobs_2019])
+
+// Total Women in STEM across all cities
+Total_Women_STEM = 
+SUM('women_in_stem'[num_women_stem_2019])
+
+// Average percentage of women in STEM
+Avg_Pct_Women_STEM = 
+AVERAGE('women_in_stem'[pct_women_stem_2019])
+
+// Average women's STEM income
+Avg_Women_Income = 
+AVERAGE('women_in_stem'[median_stem_income_women_2019])
+
+// Average all STEM income
+Avg_All_STEM_Income = 
+AVERAGE('women_in_stem'[median_stem_income_all_2019])
+
+// Total number of cities in analysis
+Total_Cities = 
+DISTINCTCOUNT('women_in_stem'[CityName])
+
+
+
+// ───────────────────────────────────────────────────────────────
+// SECTION 3: GROWTH & TREND MEASURES
+// ───────────────────────────────────────────────────────────────
+
+// Average women STEM growth rate
+Women_STEM_Growth_Rate = 
+AVERAGE('women_in_stem'[pct_women_stem_change_2015_2019])
+
+// Average STEM jobs growth rate
+STEM_Jobs_Growth_Rate = 
+AVERAGE('women_in_stem'[pct_stem_jobs_change_2015_2019])
+
+// Average income change for all STEM
+Income_Change_All = 
+AVERAGE('women_in_stem'[pct_median_stem_income_change_all_2015_2019])
+
+// Average income change for women
+Income_Change_Women = 
+AVERAGE('women_in_stem'[pct_median_stem_income_change_women_2015_2019])
+
+// Cities with positive women STEM growth
+Cities_Positive_Growth = 
+CALCULATE(
+    DISTINCTCOUNT('women_in_stem'[CityName]),
+    'women_in_stem'[pct_women_stem_change_2015_2019] > 0
+)
+
+// % of cities with positive growth
+Pct_Cities_Positive_Growth = 
+DIVIDE(
+    [Cities_Positive_Growth],
+    [Total_Cities],
+    0
+)
+
+
+// ───────────────────────────────────────────────────────────────
+// SECTION 4: INCOME GAP ANALYSIS MEASURES
+// ───────────────────────────────────────────────────────────────
+
+// Average income gap across all cities
+Avg_Income_Gap = 
+AVERAGE('women_in_stem'[Income_Gap])
+
+// Median income gap 
+Median_Income_Gap = 
+MEDIAN('women_in_stem'[Income_Gap])
+
+// Average income gap percentage
+Avg_Income_Gap_Pct = 
+AVERAGE('women_in_stem'[Income_Gap_Pct])
+
+// Maximum income gap
+Max_Income_Gap = 
+MAX('women_in_stem'[Income_Gap])
+
+// Minimum income gap
+Min_Income_Gap = 
+MIN('women_in_stem'[Income_Gap])
+
+
+
+// ═══════════════════════════════════════════════════════════════
+// END OF DAX MEASURES 
+// Dataset: women_in_stem.csv
+// Total Measures: 20+
+// Total Calculated Columns: 7
+// ═══════════════════════════════════════════════════════════════
